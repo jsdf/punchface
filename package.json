@@ -7,7 +7,10 @@
 		"typescript": "^3.7.5"
 	},
 	"scripts": {
-		"prod": "parcel build public/index.html --out-dir docs/ --public-url /punchface/",
-		"pages": "yarn prod; git add -A; git commit -m 'update website'; git push origin master"
+		"prod": "parcel build index.html --out-dir docs/ --public-url /punchface/",
+		"pages": "yarn prod&& git add -A&& git commit -m 'update website'&& git push origin master"
+	},
+	"devDependencies": {
+		"cssnano": "^4.1.10"
 	}
 }
