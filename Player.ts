@@ -1,39 +1,60 @@
 import {GameObject} from "./GameObject";
 import {idleAnim, walkAnim} from "./assets";
-import {Vec2d} from "./Vec2d";
+import {Vec3d} from "./Vec3d";
+import {PhysBody} from "./Physics";
 
 import * as utils from "./utils";
 
+const MOVEMENT_SPEED = 1;
+
 export class Player extends GameObject {
 	anim = idleAnim;
-	update(game) {
-		const movement = new Vec2d();
-		if (game.input.keys.has("d")) {
-			movement.x = 1;
-		}
-		if (game.input.keys.has("a")) {
-			movement.x = -1;
-		}
-		if (game.input.keys.has("w")) {
-			movement.y = -1;
-		}
-		if (game.input.keys.has("s")) {
-			movement.y = 1;
-		}
+	physBody = new PhysBody({obj: this, mass: 200, radius: 50});
+	constructor() {
+		super();
+		this.position.y = -600;
+	}
 
+	isOnGround(game) {
+		return (
+			this.physBody.position.y - this.physBody.radius <=
+			game.physics.floorHeight + 0.001
+		);
+	}
+
+	update(game) {
+		const movement = game.input.direction.clone();
+		movement.mulScalar(MOVEMENT_SPEED);
+		const onGround = this.isOnGround(game);
+		if (!onGround) {
+			movement.z = 0;
+		}
 		this.position.add(movement);
 
-		if (movement.magnitude() > 0) {
+		if (game.input.jump) {
+			if (onGround) {
+				this.physBody.applyForce(
+					new Vec3d({x: 0, y: 10000, z: 0}).mulScalar(
+						this.physBody.mass
+					)
+				);
+			}
+		}
+
+		if (game.input.direction.magnitude() > 0 && onGround) {
 			this.anim = walkAnim;
 		} else {
 			this.anim = idleAnim;
 		}
 	}
 
-	render(ctx, frame) {
-		const guyImage = utils.getImage(this.anim[frame % this.anim.length]);
+	render(game, ctx) {
+		const guyImage = utils.getImage(
+			this.anim[game.frameNumber % this.anim.length]
+		);
+		const screenPos = game.getScreenPos(this);
 		if (guyImage) {
-			ctx.drawImage(guyImage, this.position.x, this.position.y);
+			ctx.drawImage(guyImage, screenPos.x, screenPos.y);
 		}
 	}
 }
