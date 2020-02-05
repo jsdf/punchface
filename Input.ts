@@ -8,7 +8,6 @@ export class Input {
 	jump = false;
 
 	onKeyDown(key) {
-		console.log("onKeyDown", key);
 		this.keysDown.add(key);
 		this.keysTriggered.add(key);
 	}
@@ -35,11 +34,9 @@ export class Input {
 			this.direction.z += -1;
 		}
 
-		if (this.keysTriggered.has("c")) {
+		if (this.keysTriggered.has("c") || this.keysTriggered.has("n")) {
 			this.jump = true;
 		}
-
-		// console.log(this.keysTriggered);
 
 		this.keysTriggered.clear();
 	}

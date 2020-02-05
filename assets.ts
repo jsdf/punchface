@@ -6,7 +6,10 @@ export const images = {
 	idle1: require("./assets/idle1.png"),
 	idle2: require("./assets/idle2.png"),
 	idle3: require("./assets/idle3.png"),
-	idle4: require("./assets/idle4.png")
+	idle4: require("./assets/idle4.png"),
+	sewer1: require("./assets/sewer1.png"),
+	sewer2: require("./assets/sewer2.png"),
+	sewer3: require("./assets/sewer3.png")
 };
 
 export const idleAnim = [
@@ -21,3 +24,5 @@ export const walkAnim = [
 	images.walk3,
 	images.walk4
 ];
+
+export const sewerAnim = [images.sewer1, images.sewer2, images.sewer3];

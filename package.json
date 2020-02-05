@@ -7,6 +7,7 @@
 		"typescript": "^3.7.5"
 	},
 	"scripts": {
+		"dev": "parcel index.html",
 		"prod": "parcel build index.html --out-dir docs/ --public-url /punchface/",
 		"pages": "yarn prod && git add -A && git commit -m 'update website' && git push origin master"
 	},

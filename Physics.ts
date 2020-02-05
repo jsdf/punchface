@@ -98,10 +98,20 @@ export class PhysBody {
 	}
 }
 
-function floorClamp(body, floorHeight: number) {
-	if (body.position.y - body.radius < floorHeight) {
-		body.position.y = floorHeight + body.radius;
+function yMin(body, min: number) {
+	if (body.position.y - body.radius < min) {
+		body.position.y = min + body.radius;
 		body.nonIntegralVelocity.y = 0;
+	}
+}
+function zClamp(body, min: number, max: number) {
+	if (body.position.z - body.radius < min) {
+		body.position.z = min + body.radius;
+		body.nonIntegralVelocity.z = 0;
+	}
+	if (body.position.z + body.radius > max) {
+		body.position.z = max - body.radius;
+		body.nonIntegralVelocity.z = 0;
 	}
 }
 
@@ -112,8 +122,10 @@ export class Physics {
 	simulationRate = 1.0;
 	timeScale = 1.0;
 	dynamicTimestep = true;
-	bodies = [];
+	bodies: Array<PhysBody> = [];
 	floorHeight = -100;
+	zMin = -235;
+	zMax = -25;
 
 	integrateBodies(dt: number, drag: number) {
 		for (const body of this.bodies) {
@@ -130,7 +142,8 @@ export class Physics {
 		// do this after so we can fix any world penetration resulting from motion
 		// integration
 		for (const body of this.bodies) {
-			floorClamp(body, this.floorHeight);
+			yMin(body, this.floorHeight);
+			zClamp(body, this.zMin, this.zMax);
 		}
 	}
 

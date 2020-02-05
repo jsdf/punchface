@@ -123,4 +123,9 @@ export class Vec3d {
   equals(other: Vec3dInit): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z;
   }
+
+  // return x+y components, which can be used to construct a Vec2d
+  xy() {
+    return {x: this.x, y: this.y};
+  }
 }

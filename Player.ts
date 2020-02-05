@@ -13,6 +13,13 @@ export class Player extends GameObject {
 	constructor() {
 		super();
 		this.position.y = -600;
+		this.bounds.fromCenteredBox(
+			new Vec3d({
+				x: 118,
+				y: 116,
+				z: 50
+			})
+		);
 	}
 
 	isOnGround(game) {
@@ -54,7 +61,12 @@ export class Player extends GameObject {
 		);
 		const screenPos = game.getScreenPos(this);
 		if (guyImage) {
-			ctx.drawImage(guyImage, screenPos.x, screenPos.y);
+			ctx.drawImage(
+				guyImage,
+
+				screenPos.x - guyImage.width / 2,
+				screenPos.y - guyImage.height / 2
+			);
 		}
 	}
 }
